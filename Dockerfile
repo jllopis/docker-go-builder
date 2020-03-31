@@ -1,5 +1,5 @@
 # $ docker run -ti -v $PWD:/go/src/bitbucket.org/acbapis/legalitas -v /Users/jllopis/devel/go/own/src/bitbucket.org/acbapis/acbapis:/go/src/bitbucket.org/acbapis/acbapis buildert bitbucket.org/acbapis/legalitas bGludXgK
-FROM debian:buster-slim AS builder
+FROM debian:bullseye-slim AS builder
 
 # gcc for cgo
 RUN buildDeps='build-essential curl autoconf automake libtool zlib1g-dev libgflags-dev libgtest-dev clang libc++-dev gcc g++ libc6-dev pkg-config wget apt libc-ares-dev'; \
@@ -10,10 +10,10 @@ RUN buildDeps='build-essential curl autoconf automake libtool zlib1g-dev libgfla
 		ca-certificates \
 		$buildDeps
 
-ENV GOLANG_VERSION 1.12.4
-ENV PROTOC_VERSION 3.7.1
-ENV GRPC_GO_VERSION 1.20.0
-ENV GRPC_GATEWAY_VERSION 1.8.5
+ENV GOLANG_VERSION 1.14.1
+ENV PROTOC_VERSION 3.11.4
+ENV GRPC_GO_VERSION 1.28.0
+ENV GRPC_GATEWAY_VERSION 1.14.3
 
 RUN set -eux; \
 	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz"; \
@@ -72,7 +72,7 @@ RUN cp /go/src/google.golang.org/genproto/googleapis/api/annotations/*.pb.go /go
 # Cleanup
 RUN apt purge $buildDeps && rm -rf /var/lib/apt/lists/*
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		gcc \
 		libc6-dev \
